@@ -10,7 +10,18 @@
 10. SELECT * FROM film WHERE special_features LIKE 'Deleted Scenes';	Ans: African Egg, ... , Zhigavo Core
 11. //
 12. //
-13.SELECT DISTINCT a.first_name, a.last_name, a.actor_id
-   FROM film_actor f JOIN actor a ON f.actor_id=a.actor_id
-   WHERE a.actor_id=(SELECT actor_id FROM film_actor GROUP BY actor_id
-   ORDER BY COUNT(film_id) DESC LIMIT 1);	Ans: Gina Degeneres (42)
+13. SELECT DISTINCT a.first_name, a.last_name, a.actor_id
+    FROM film_actor f JOIN actor a ON f.actor_id=a.actor_id
+    WHERE a.actor_id=(SELECT actor_id FROM film_actor GROUP BY actor_id
+    ORDER BY COUNT(film_id) DESC LIMIT 1);	Ans: Gina Degeneres (42)
+14. //
+15. SELECT AVG(length) FROM film;	Ans: 115.3 
+16. CREATE VIEW film_to_category AS
+    SELECT c.name, f.film_id FROM category c JOIN film_category f 
+    ON c.category_id=f.category_id;
+    SELECT fc.name, AVG(film.length) AS average_length FROM film_to_category fc 
+    JOIN film ON film.film_id=fc.film_id GROUP BY fc.name;	Ans: Action (111.6), ... , Travel (113.3)
+17. SELECT * FROM film WHERE description LIKE '%robot%';	Ans: Agent Truman, ... , Yentl Idaho
+18. SELECT COUNT(film_id) FROM film WHERE release_year=2010;	Ans: 0
+19. SELECT film.title FROM film JOIN film_to_category ftc 
+    ON film.film_id=ftc.film_id WHERE ftc.name = 'Horror';	Ans: Ace Goldfinger, ... , Zhigavo Core
